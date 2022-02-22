@@ -28,13 +28,13 @@ the portable folder.
 Move all the unzipped files and folders into the sketchbook tools folder.
 The folder structure should look like this:
 
-_sketcbook/
- |_tools/
-   |_fxtool/    Contains Arduino Java plugin
-   |_PIL/       Contains the Pillow Python module
-   |_python3/   Contains Python 3.8.8 for windows (32-bit)
-   |_serial/    Contains the pyserial module
-   |_readme.md  This file
+    _sketcbook/
+     |_tools/
+       |_fxtool/    Contains Arduino Java plugin
+       |_PIL/       Contains the Pillow Python module
+       |_python3/   Contains Python 3.8.8 for windows (32-bit)
+       |_serial/    Contains the pyserial module
+       |_readme.md  This file
 
 ## Dependencies
 
