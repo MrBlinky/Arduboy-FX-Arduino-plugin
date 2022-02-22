@@ -1,9 +1,11 @@
-#Arduboy FX Arduino plugging
+# Arduboy FX Arduino plugging
 
 This Arduino plugin adds an option under the Tools menu that allows easy 
 building and uploading of Arduboy FX data using the Arduino IDE.
 
-#Install
+![demo](https://github.com/MrBlinky/Arduboy-FX-Arduino-plugin/raw/main/fx-upload-using-arduino-plugin-demo.gif)
+
+## Install
 
 Go to the Arduino sketchbook folder and see if there is a folder called tools.
 If this folder does not exist, create a new folder and name it tools.
@@ -34,7 +36,7 @@ _sketcbook/
    |_serial/    Contains the pyserial module
    |_readme.md  This file
 
-#Dependencies
+## Dependencies
 
 The Arduboy FX tool depends on Python 3 and the pyserial and PILlow modules. 
 The python3 folder contains a copy of  Python 3.8.8 for Windows. If you use a 
@@ -59,7 +61,7 @@ The PILLow module can be found at https://pypi.org/project/Pillow/#files
 
 The pyserial module can be found at https://pypi.org/project/pyserial/#files
 
-#Usage
+## Usage
 Start the Arduino IDE and go to the tools menu. If installation went well you 
 will see a new tools option called **'Build and upload Arduboy FX data'** If the
 option is not available. Check above installation steps again.
