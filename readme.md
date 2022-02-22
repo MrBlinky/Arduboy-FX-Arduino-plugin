@@ -7,7 +7,7 @@ building and uploading of Arduboy FX data using the Arduino IDE.
 
 ## Install
 
-Go to the Arduino sketchbook folder and see if there is a folder called tools.
+Go to the Arduino sketchbook location and see if there is a folder called tools.
 If this folder does not exist, create a new folder and name it tools.
 
 If you're not sure where you can find the sketchbook location, the Arduino
@@ -23,18 +23,21 @@ You can also find the location in Preferences, under Sketchbook location:
     macOS: Arduino > Preferences
 
 If a portable version of Arduino is used the sketchbook folder is located in 
-the portable folder.
+the portable folder and called sketchbook.
 
-Move all the unzipped files and folders into the sketchbook tools folder.
+Move all the unzipped files and folders into the created tools folder.
 The folder structure should look like this:
 
-    _sketcbook/
+    _<sketcbook_location>
      |_tools/
-       |_fxtool/    Contains Arduino Java plugin
-       |_PIL/       Contains the Pillow Python module
-       |_python3/   Contains Python 3.8.8 for windows (32-bit)
-       |_serial/    Contains the pyserial module
-       |_readme.md  This file
+       |_fxtool/          Contains Arduino Java plugin
+       |_PIL/             Contains the Pillow Python module
+       |_python3/         Contains Python 3.8.8 for windows (32-bit)
+       |_serial/          Contains the pyserial module
+       |_fxdata-build.py  FX data build Python script
+       |_fxdata-upload.py FX data upload Python script
+       |_LICENSE          Licence file
+       |_readme.md        This file
 
 ## Dependencies
 
@@ -66,7 +69,8 @@ Start the Arduino IDE and go to the tools menu. If installation went well you
 will see a new tools option called **'Build and upload Arduboy FX data'** If the
 option is not available. Check above installation steps again.
 
-To succesfully build the FX data your sketch folder must contain a fxdata.txt 
-script file. The tool will create a fxdata.h file in your sketch folder and a
-fxdata.bin containing the actual data. This fxdata.bin will also  be uploaded
-to your Arduboy FX so make sure Arduboy is connected.
+To succesfully build the FX data, there must be a folder named fxdata in your 
+sketch folder and it must contain a fxdata.txt script file. The tool will create
+a fxdata.h file in the fxdata folder and a fxdata.bin file containing the actual
+fx data. The fxdata.bin file will also be uploaded to your Arduboy FX. So make 
+sure Arduboy is connected.
