@@ -1,6 +1,6 @@
-#FX data build tool version 1.01 by Mr.Blinky May 2021 - Feb 2022
+#FX data build tool version 1.02 by Mr.Blinky May 2021 - Feb 2022
 
-VERSION = '1.01'
+VERSION = '1.02'
 
 import sys
 import os
@@ -166,6 +166,7 @@ for lineNr in range(len(lines)):
         if p >= 0: part = part[p+2:]
         else: blkcom = True;
       #handle types
+      elif part == '='       : pass
       elif part == 'const'   : pass
       elif part == 'PROGMEM' : pass
       elif part == 'int8_t'  : t = 1
@@ -178,10 +179,7 @@ for lineNr in range(len(lines)):
       elif part == 'uint32_t': t = 4
       elif part == 'image_t' : t = 5
       elif part == 'raw_t'   : t = 6
-      #handle labels
-      elif (part == '=') and (label !='') : 
-        symbols.append((label,len(bytes)))
-        label =''
+      elif part == 'align'   : t = 7
       #handle strings  
       elif (part[:1] == "'") or (part[:1] == '"'):
         if  part[:1] == "'": part = part[1:part.rfind("'")]
@@ -195,11 +193,11 @@ for lineNr in range(len(lines)):
       #handle values
       elif part[:1].isnumeric():
         n = int(part,0)
+        if t > 3: bytes.append((n >> 24) & 0xFF)    
+        if t > 2: bytes.append((n >> 16) & 0xFF)    
+        if t > 1: bytes.append((n >> 8) & 0xFF)    
         bytes.append((n >> 0) & 0xFF)    
-        if t == 2: bytes.append((n >> 8) & 0xFF)    
-        if t == 3: bytes.append((n >> 16) & 0xFF)    
-        if t == 4: bytes.append((n >> 24) & 0xFF)    
-      #handlelabels
+      #handle labels
       elif part[:1].isalpha():
         for j in range(len(part)):  
           if part[j] == '=':
@@ -213,6 +211,22 @@ for lineNr in range(len(lines)):
           else:
             sys.stderr.write('ERROR in line {}: Bad label: {}\n'.format(lineNr,label))
             sys.exit(-1)
+        if (label != '') and (i < len(parts) - 1) and (parts[i+1][:1] == '='):
+          symbols.append((label,len(bytes)))
+          label = ''
+        #handle symbol values
+        if label != '':
+          for symbol in symbols:
+            if symbol[0] == label:
+              if t > 3: bytes.append((symbol[1] >> 24) & 0xFF)    
+              if t > 2: bytes.append((symbol[1] >> 16) & 0xFF)    
+              if t > 1: bytes.append((symbol[1] >> 8) & 0xFF)    
+              bytes.append((symbol[1] >> 0) & 0xFF)    
+              label = ''
+              break
+        if label != '': 
+          sys.stderr.write('ERROR in line {}: Undefined symbol: {}\n'.format(lineNr,label))
+          sys.exit(-1)
       elif len(part) > 0: 
         sys.stderr.write('ERROR unable to parse {} in element: {}\n'.format(part,str(parts)))
         sys.exit(-1)
