@@ -1,6 +1,6 @@
-#FX data build tool version 1.02 by Mr.Blinky May 2021 - Feb 2022
+#FX data build tool version 1.03 by Mr.Blinky May 2021 - Feb 2022
 
-VERSION = '1.02'
+VERSION = '1.03'
 
 import sys
 import os
@@ -16,7 +16,7 @@ bytes = bytearray()
 symbols = []
 label = ''
 blkcom = False
-try: 
+try:
   toolspath = os.path.dirname(os.path.abspath(sys.argv[0]))
   sys.path.insert(0, toolspath)
   from PIL import Image
@@ -31,15 +31,15 @@ def rawData(filename):
     bytes = bytearray(file.read())
     file.close()
     return bytes
-  
+
 def imageData(filename):
   global path
   filename = path + filename
-  
+
   ## parse filename ## FILENAME_[WxH]_[S].[EXT]"
   spriteWidth = 0
   spriteHeight = 0
-  spacing = 0  
+  spacing = 0
   elements = os.path.basename(os.path.splitext(filename)[0]).split("_")
   lastElement = len(elements)-1
   #get width and height from filename
@@ -51,13 +51,13 @@ def imageData(filename):
       if i < lastElement:
         spacing = int(elements[i+1])
       break
-    else: i -= 1  
+    else: i -= 1
   else:
     i = lastElement
   #get sprite name (may contain underscores) from filename
   name = elements[0]
   for j in range(1,i):
-    name += "_" + elements[j] 
+    name += "_" + elements[j]
   spriteName = name.replace("-","_")
   #load image
   img = Image.open(filename).convert("RGBA")
@@ -68,19 +68,19 @@ def imageData(filename):
    if i[3] < 255:
     transparency = True
     break
-  
+
   # check for multiple frames/tiles
   if spriteWidth > 0:
     hframes = (img.size[0] - spacing) // (spriteWidth + spacing)
   else:
-    spriteWidth = img.size[0] - 2 * spacing 
+    spriteWidth = img.size[0] - 2 * spacing
     hframes = 1
   if spriteHeight > 0:
     vframes = (img.size[1] - spacing) // (spriteHeight + spacing)
   else:
     spriteHeight = img.size[1] - 2* spacing
     vframes = 1
-  
+
   #create byte array for bin file
   size = (spriteHeight+7) // 8 * spriteWidth * hframes * vframes
   if transparency:
@@ -101,7 +101,7 @@ def imageData(filename):
         line = "  "
         for x in range (0,spriteWidth):
           for p in range (0,8):
-            b = b >> 1  
+            b = b >> 1
             m = m >> 1
             if (y + p) < spriteHeight: #for heights that are not a multiple of 8 pixels
               if pixels[(fy + y + p) * img.size[0] + fx + x][1] > 64:
@@ -109,19 +109,19 @@ def imageData(filename):
               if pixels[(fy + y + p) * img.size[0] + fx + x][3] > 64:
                 m |= 0x80 #opaque pixel
               else:
-                b &= 0x7F #for transparent pixel clear possible white pixel 
+                b &= 0x7F #for transparent pixel clear possible white pixel
           bytes[i] = b
           i += 1
           if transparency:
-            bytes[i] = m 
+            bytes[i] = m
             i += 1
-      frames += 1  
+      frames += 1
       fx += spriteWidth + spacing
     fy += spriteHeight + spacing
   #headerfile.write("constexpr uint8_t {}Width = {};\n".format(spriteName, spriteWidth))
   #headerfile.write("constexpr uint8_t {}Height = {};\n".format(spriteName,spriteHeight))
   #if frames > 1: headerfile.write("constexpr uint8_t {}Frames = {};\n".format(spriteName,frames))
-  return bytes  
+  return bytes
 
 ################################################################################
 
@@ -130,7 +130,7 @@ if (len(sys.argv) != 2) or (os.path.isfile(sys.argv[1]) != True) :
   sys.exit(-1)
 
 filename = os.path.abspath(sys.argv[1])
-datafilename = os.path.splitext(filename)[0] + '.bin'       
+datafilename = os.path.splitext(filename)[0] + '.bin'
 headerfilename = os.path.splitext(filename)[0] + '.h'
 path = os.path.dirname(filename) + os.sep
 
@@ -169,6 +169,7 @@ for lineNr in range(len(lines)):
       elif part == '='       : pass
       elif part == 'const'   : pass
       elif part == 'PROGMEM' : pass
+      elif part == 'align'   : t = 0
       elif part == 'int8_t'  : t = 1
       elif part == 'uint8_t' : t = 1
       elif part == 'int16_t' : t = 2
@@ -179,8 +180,7 @@ for lineNr in range(len(lines)):
       elif part == 'uint32_t': t = 4
       elif part == 'image_t' : t = 5
       elif part == 'raw_t'   : t = 6
-      elif part == 'align'   : t = 7
-      #handle strings  
+      #handle strings
       elif (part[:1] == "'") or (part[:1] == '"'):
         if  part[:1] == "'": part = part[1:part.rfind("'")]
         else:  part = part[1:part.rfind('"')]
@@ -193,13 +193,17 @@ for lineNr in range(len(lines)):
       #handle values
       elif part[:1].isnumeric():
         n = int(part,0)
-        if t > 3: bytes.append((n >> 24) & 0xFF)    
-        if t > 2: bytes.append((n >> 16) & 0xFF)    
-        if t > 1: bytes.append((n >> 8) & 0xFF)    
-        bytes.append((n >> 0) & 0xFF)    
+        if t == 4: bytes.append((n >> 24) & 0xFF)
+        if t >= 3: bytes.append((n >> 16) & 0xFF)
+        if t >= 2: bytes.append((n >> 8) & 0xFF)
+        if t >= 1: bytes.append((n >> 0) & 0xFF)
+      #handle align
+        if t == 0:
+          align = len(bytes) % n
+          if align: bytes += b'\xFF' * (n - align)
       #handle labels
       elif part[:1].isalpha():
-        for j in range(len(part)):  
+        for j in range(len(part)):
           if part[j] == '=':
             symbols.append((label,len(bytes)))
             label = ''
@@ -218,19 +222,19 @@ for lineNr in range(len(lines)):
         if label != '':
           for symbol in symbols:
             if symbol[0] == label:
-              if t > 3: bytes.append((symbol[1] >> 24) & 0xFF)    
-              if t > 2: bytes.append((symbol[1] >> 16) & 0xFF)    
-              if t > 1: bytes.append((symbol[1] >> 8) & 0xFF)    
-              bytes.append((symbol[1] >> 0) & 0xFF)    
+              if t == 4: bytes.append((symbol[1] >> 24) & 0xFF)
+              if t >= 3: bytes.append((symbol[1] >> 16) & 0xFF)
+              if t >= 2: bytes.append((symbol[1] >> 8) & 0xFF)
+              if t >= 1: bytes.append((symbol[1] >> 0) & 0xFF)
               label = ''
               break
-        if label != '': 
+        if label != '':
           sys.stderr.write('ERROR in line {}: Undefined symbol: {}\n'.format(lineNr,label))
           sys.exit(-1)
-      elif len(part) > 0: 
+      elif len(part) > 0:
         sys.stderr.write('ERROR unable to parse {} in element: {}\n'.format(part,str(parts)))
         sys.exit(-1)
-        
+
 print("Saving FX data include file {}".format(headerfilename))
 with open(headerfilename,"w") as file:
   file.write('#pragma once\n\n')
@@ -242,7 +246,7 @@ with open(headerfilename,"w") as file:
   for symbol in symbols:
     file.write('constexpr uint24_t {} = 0x{:06X};\n'.format(symbol[0],symbol[1]))
   file.close()
-  
+
 print("Saving {} bytes FX data to {}".format(len(bytes),datafilename))
 with open(datafilename,"wb") as file:
   file.write(bytes)
