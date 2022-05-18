@@ -1,4 +1,4 @@
-/* Arduboy FX Arduino java plugin v1.02 by Mr.Blinky Jan 2022 - Feb 2022 */
+/* Arduboy FX Arduino java plugin v1.03 by Mr.Blinky Jan 2022 - May 2022 */
 
 package arduboy.fxtool;
 
@@ -32,7 +32,7 @@ public class fxtool implements Tool
   // This function is called when the menu option is clicked
   public void run() 
   {
-    System.out.print("Arduboy FX Arduino plugin v1.02 by Mr.Blinky Jan 2022 - Feb 2022");
+    System.out.print("Arduboy FX Arduino plugin v1.03 by Mr.Blinky Jan 2022 - May 2022");
     //get fx data paths
     String fxdataPath = fixSeperator(editor.getSketch().getFolder().getAbsolutePath()) + File.separator + "fxdata" + File.separator;
     final String fxdataScript = fxdataPath + "fxdata.txt";
@@ -99,7 +99,7 @@ public class fxtool implements Tool
   private String fixSeperator(String s)
   {
      if (s == null) return null;     
-     if (File.separator == "/") return s.replace("\\", "/");       
+     if (System.getProperty("file.separator") == "/") return s.replace("\\", "/");       
      else return s.replace("/", "\\");       
   }
   
