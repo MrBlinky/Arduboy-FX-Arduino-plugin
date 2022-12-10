@@ -1,7 +1,7 @@
 # Arduboy FX Arduino plugging
 
 This Arduino plugin adds an option under the Tools menu that allows easy 
-building and uploading of Arduboy FX data using the Arduino IDE.
+building and uploading of Arduboy FX data using the (Legacy) Arduino IDE.
 
 ![demo](https://github.com/MrBlinky/Arduboy-FX-Arduino-plugin/raw/main/fx-upload-using-arduino-plugin-demo.gif)
 
