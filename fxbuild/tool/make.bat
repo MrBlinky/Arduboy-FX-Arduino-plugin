@@ -8,8 +8,8 @@ set JDK_VERSION=1.8
 set JDK_DIR=C:\Program Files\Java\jdk1.8.0_251\bin
 set ARDUINO_DIR=C:\arduino-portable\arduino-1.8.19
 
-set CLASS_NAME=fxtool
-set PACKAGE_DIR=arduboy\fxtool
+set CLASS_NAME=fxbuild
+set PACKAGE_DIR=arduboy\fxbuild
 set LIB="%ARDUINO_DIR%\lib\arduino-core.jar;%ARDUINO_DIR%\lib\pde.jar"
 
 :make

@@ -1,6 +1,6 @@
 /* Arduboy FX Arduino java plugin v1.04 by Mr.Blinky Jan 2022 - Jan 2023 */
 
-package arduboy.fxtool;
+package arduboy.fxupload;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -16,7 +16,7 @@ import processing.app.Sketch;
 import processing.app.tools.Tool;
 import processing.app.helpers.ProcessUtils;
 
-public class fxtool implements Tool
+public class fxupload implements Tool
 {
   Editor editor;
 
@@ -29,7 +29,7 @@ public class fxtool implements Tool
   // This function is called to displayed the title in the tools menu
   public String getMenuTitle() 
   {
-    return "Build and upload Arduboy FX data";
+    return "Upload existing Arduboy FX data";
   }
 
   // This function is called when the menu option is clicked
@@ -85,23 +85,23 @@ public class fxtool implements Tool
       {
         try 
         {
-          editor.statusNotice("Building FX data");          
-          if( listenOnProcess(new String[]{pythonExe,buildTool,fxdataScript}) != 0) editor.statusError("FX data build failed!");
-          else try
-          {
-            editor.statusNotice("Uploading FX data");                
-            if( listenOnProcess(new String[]{pythonExe,uploadTool,fxdataFile}) != 0) editor.statusError("FX data upload failed!");
-            else editor.statusNotice("FX data Uploaded");      
-          }
-          catch (Exception e)
-          { 
-            editor.statusError("FX data upload failed!"); 
-          }
-        } 
+          //editor.statusNotice("Building FX data");          
+          //if( listenOnProcess(new String[]{pythonExe,buildTool,fxdataScript}) != 0) editor.statusError("FX data build failed!");
+          //else try
+          //{
+          editor.statusNotice("Uploading FX data");                
+          if( listenOnProcess(new String[]{pythonExe,uploadTool,fxdataFile}) != 0) editor.statusError("FX data upload failed!");
+          else editor.statusNotice("FX data Uploaded");      
+        }
         catch (Exception e)
         { 
-          editor.statusError("FX data build failed!"); 
+          editor.statusError("FX data upload failed!"); 
         }
+        //} 
+        //catch (Exception e)
+        //{ 
+        //  editor.statusError("FX data build failed!"); 
+        //}
         
       }
     };

@@ -37,40 +37,56 @@ The folder structure should look like this:
        |_fxdata-build.py  FX data build Python script
        |_fxdata-upload.py FX data upload Python script
        |_LICENSE          Licence file
+       |_python3path.txt  text file containing the python install path (optional)
        |_readme.md        This file
 
 ## Dependencies
 
 The Arduboy FX tool depends on Python 3 and the pyserial and PILlow modules. 
-The python3 folder contains a copy of  Python 3.8.8 for Windows. If you use a 
-different OS then delete all files in  the Python3 folder, download Python3 for
-your OS from one of the link below and extract it contents into the Python3 folder.
+The python3 folder contains a portable version Python 3.8.8 for Windows so
+the plugin can be easily added to a Portable Arduino version.
 
-Windows 32-bit: https://www.python.org/ftp/python/3.8.8/python-3.8.8-embed-win32.zip
+When using a different OS or a different version of python is preferred then the
+PIL, python3 and serial folders can be deleted. Python3 can be downloaded and
+installed from:
 
-Windows 64-bit: https://www.python.org/ftp/python/3.8.8/python-3.8.8-embed-amd64.zip
+https://www.python.org/downloads/
 
-OSX: https://www.python.org/ftp/python/3.8.8/python-3.8.8-macosx10.9.pkg
+After installation, 
+on Windows:     press Windows key + R enter cmd and enter python on the commandline.
+MacOS or linux: go to terminal and type python3
+In the python console enter the following two lines to get the python3 install path:
 
-Linux: https://www.python.org/ftp/python/3.8.8/Python-3.8.8.tgz
+import sys
+sys.executable
 
-For other version: https://www.python.org/downloads/
+copy the python install path to clipboard. Now edit the python3path.txt file, 
+past the path and save the file.
 
-The PIL and serial folders contain the PIllow and pyserial python modules for 
-the supplied Windows Python version. If you use a different OS you may need to
-replace these modules.
+back in the python console enter exit() to exit the python console. Back on the 
+commandline / terminal type the following commands to install the Pillow and 
+pySerial modules:
 
-The PILLow module can be found at https://pypi.org/project/Pillow/#files
-
-The pyserial module can be found at https://pypi.org/project/pyserial/#files
+Windows: python -m pip install Pillow
+         python -m pip install pySerial
+         
+MacOS/Linus: sudo python3 -m pip install Pillow
+             sudo python3 -m pip install pySerial
 
 ## Usage
+
 Start the Arduino IDE and go to the tools menu. If installation went well you 
-will see a new tools option called **'Build and upload Arduboy FX data'** If the
-option is not available. Check above installation steps again.
+will see three new tools options called:
+**'Build Arduboy FX data'**
+**'Build and upload Arduboy FX data'**
+**'Upload existing Arduboy FX data'**
+If these options are not available. Check above installation steps again.
 
 To succesfully build the FX data, there must be a folder named fxdata in your 
 sketch folder and it must contain a fxdata.txt script file. The tool will create
 a fxdata.h file in the fxdata folder and a fxdata.bin file containing the actual
-fx data. The fxdata.bin file will also be uploaded to your Arduboy FX. So make 
-sure Arduboy is connected.
+fx data. The fxdata.bin file will also be uploaded to your Arduboy FX.
+
+When a savesection is defined in the fxdata.txt file there will be two more
+files created. A fxdata-data.bin and fxdata-save.bin file. These files should be
+used when the program is added to a flash image file.
