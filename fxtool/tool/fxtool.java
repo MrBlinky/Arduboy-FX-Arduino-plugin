@@ -35,7 +35,7 @@ public class fxtool implements Tool
   // This function is called when the menu option is clicked
   public void run() 
   {
-    System.out.print("Arduboy FX Arduino plugin v1.04 by Mr.Blinky Jan 2022 - Jan 2023\n");
+    System.out.print("Arduboy FX Arduino plugin v1.05 by Mr.Blinky Jan 2022 - Jan 2023\n");
     //get fx data paths
     String fxdataPath = fixSeperator(editor.getSketch().getFolder().getAbsolutePath()) + File.separator + "fxdata" + File.separator;
     final String fxdataScript = fxdataPath + "fxdata.txt";
