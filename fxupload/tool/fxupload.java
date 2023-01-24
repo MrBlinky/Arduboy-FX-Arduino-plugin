@@ -1,4 +1,4 @@
-/* Arduboy FX Arduino java plugin v1.04 by Mr.Blinky Jan 2022 - Jan 2023 */
+/* Arduboy FX Arduino java plugin v1.05 by Mr.Blinky Jan 2022 - Jan 2023 */
 
 package arduboy.fxupload;
 
@@ -47,34 +47,36 @@ public class fxupload implements Tool
     final String uploadTool = sketchbookPath + "/tools/fxdata-upload.py";
     
     //try get installed python3 path from text file
-    String python3path = "";
+    String python = null;
     try {
-       python3path = new String (Files.readAllBytes(Paths.get(sketchbookPath + "/tools/python3path.txt")));
+       String tmp = new String (Files.readAllBytes(Paths.get(sketchbookPath + "/tools/pythoncmd.txt")));
+       if (tmp.length() > 0) python = fixSeperator(tmp);
     } catch (IOException e) {
       //exception
     }
     
     // get python location
-    String python = null;
     String[] pythonPaths =
     { 
-      fixSeperator(python3path),
       fixSeperator(sketchbookPath + "/tools/python3/"), //Prefered location for manual or custom install
       fixSeperator(PreferencesData.get("runtime.tools.python3.path")) //location when python is installed through board package
     };
-    for (String path : pythonPaths) 
+    if (python == null) 
     {
-      File file = new File(path, PreferencesData.get("runtime.os").contentEquals("windows") ? "python.exe" : "python3");
-      if (file.exists() && file.isFile() && file.canExecute()) 
+      for (String path : pythonPaths) 
       {
-        python = fixSeperator(file.getAbsolutePath());
-        break;
+        File file = new File(path, PreferencesData.get("runtime.os").contentEquals("windows") ? "python.exe" : "python3");
+        if (file.exists() && file.isFile() && file.canExecute()) 
+        {
+          python = fixSeperator(file.getAbsolutePath());
+          break;
+        }
       }
     }
     if (python == null) 
     {   
       editor.statusError("python3 is missing.");
-      System.err.print("Make sure python3 is located at " + pythonPaths[1] +"\nor edit the python3 install path in python3path.txt");
+      System.err.print("Make sure python3 is located at " + pythonPaths[0] +"\nor edit the python3 command in pythoncmd.txt\n");
       return;
     }
     final String pythonExe = python;
