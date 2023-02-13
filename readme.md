@@ -67,11 +67,13 @@ back in the python console enter exit() to exit the python console. Back on the
 commandline / terminal type the following commands to install the Pillow and 
 pySerial modules:
 
-Windows: python -m pip install Pillow
-         python -m pip install pySerial
+Windows:  
+ python -m pip install Pillow  
+ python -m pip install pySerial
          
-MacOS/Linus: sudo python3 -m pip install Pillow
-             sudo python3 -m pip install pySerial
+MacOS/Linus:  
+ sudo python3 -m pip install Pillow  
+ sudo python3 -m pip install pySerial
 
 ## Usage
 
