@@ -60,8 +60,9 @@ In the python console enter the following two lines to get the python3 install p
 import sys  
 sys.executable
 
-copy the python install path to clipboard. Now edit the python3path.txt file, 
-paste the path and save the file.
+Copy the python install path to clipboard. Now edit the python3path.txt file and
+paste the path. After checking that the file contains only a single line and no
+newlines, save the file.
 
 back in the python console enter exit() to exit the python console. Back on the 
 commandline / terminal type the following commands to install the Pillow and 
