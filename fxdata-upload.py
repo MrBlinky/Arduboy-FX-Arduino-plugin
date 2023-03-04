@@ -204,6 +204,7 @@ def writeFlash(pagenumber, flashdata):
   time.sleep(0.5)    
   bootloader.write(b"x\x40")#RGB LED off, buttons enabled
   bootloader.read(1)
+  bootloader.close()
   print("\rFX Data uploaded successfully")
   
 ################################################################################
