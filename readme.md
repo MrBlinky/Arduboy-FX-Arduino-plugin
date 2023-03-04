@@ -57,21 +57,24 @@ on Windows:     press Windows key + R enter cmd and enter python on the commandl
 MacOS or linux: go to terminal and type python3
 In the python console enter the following two lines to get the python3 install path:
 
-import sys
+import sys  
 sys.executable
 
-copy the python install path to clipboard. Now edit the python3path.txt file, 
-past the path and save the file.
+Copy the python install path to clipboard. Now edit the python3path.txt file and
+paste the path. After checking that the file contains only a single line and no
+newlines, save the file.
 
 back in the python console enter exit() to exit the python console. Back on the 
 commandline / terminal type the following commands to install the Pillow and 
 pySerial modules:
 
-Windows: python -m pip install Pillow
-         python -m pip install pySerial
+Windows:  
+ python -m pip install Pillow  
+ python -m pip install pySerial
          
-MacOS/Linus: sudo python3 -m pip install Pillow
-             sudo python3 -m pip install pySerial
+MacOS/Linus:  
+ sudo python3 -m pip install Pillow  
+ sudo python3 -m pip install pySerial
 
 ## Usage
 
